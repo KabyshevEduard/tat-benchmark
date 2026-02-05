@@ -1,0 +1,14 @@
+task: brighter
+dataset_path: brighter-dataset/BRIGHTER-emotion-categories
+dataset_name: tat
+training_split: train
+validation_split: null
+test_split: test
+output_type: multiple_choice
+process_docs: !function utils.process_docs
+doc_to_text: "Answer the following question only by providng the letter corresponding to the right option only.\n{{question.strip()}} \nA. {{options['A']}}\nB. {{options['B']}}\nC. {{options['C']}}\nD. {{options['D']}}\nE. {{options['E']}}\nF. {{options['F']}}\nG. {{options['G']}}\nAnswer:"
+doc_to_choice: ["A", "B", "C", "D", "E", "F", "G"]
+doc_to_target: "{{ answer }}"
+metric_list:
+  - metric: acc
+  - metric: acc_norm
