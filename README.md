@@ -1,66 +1,13 @@
-# Language Model Evaluation Harness
-
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10256836.svg)](https://doi.org/10.5281/zenodo.10256836)
+# Tatar Language Evaluation for LLM 
 
 ---
-
-## Latest News 📣
-- [2025/12] **CLI refactored** with subcommands (`run`, `ls`, `validate`) and YAML config file support via `--config`. See the [CLI Reference](./docs/interface.md) and [Configuration Guide](./docs/config_files.md).
-- [2025/12] **Lighter install**: Base package no longer includes `transformers`/`torch`. Install model backends separately: `pip install lm_eval[hf]`, `lm_eval[vllm]`, etc.
-- [2025/07] Added `think_end_token` arg to `hf` (token/str), `vllm` and `sglang` (str) for stripping CoT reasoning traces from models that support it.
-- [2025/03] Added support for steering HF models!
-- [2025/02] Added [SGLang](https://docs.sglang.ai/) support!
-- [2024/09] We are prototyping allowing users of LM Evaluation Harness to create and evaluate on text+image multimodal input, text output tasks, and have just added the `hf-multimodal` and `vllm-vlm` model types and `mmmu` task as a prototype feature. We welcome users to try out this in-progress feature and stress-test it for themselves, and suggest they check out [`lmms-eval`](https://github.com/EvolvingLMMs-Lab/lmms-eval), a wonderful project originally forking off of the lm-evaluation-harness, for a broader range of multimodal tasks, models, and features.
-- [2024/07] [API model](docs/API_guide.md) support has been updated and refactored, introducing support for batched and async requests, and making it significantly easier to customize and use for your own purposes. **To run Llama 405B, we recommend using VLLM's OpenAI-compliant API to host the model, and use the `local-completions` model type to evaluate the model.**
-- [2024/07] New Open LLM Leaderboard tasks have been added ! You can find them under the [leaderboard](lm_eval/tasks/leaderboard/README.md) task group.
-
----
-
-## Announcement
-
-**A new v0.4.0 release of lm-evaluation-harness is available** !
-
-New updates and features include:
-
-- **New Open LLM Leaderboard tasks have been added ! You can find them under the [leaderboard](lm_eval/tasks/leaderboard/README.md) task group.**
-- Internal refactoring
-- Config-based task creation and configuration
-- Easier import and sharing of externally-defined task config YAMLs
-- Support for Jinja2 prompt design, easy modification of prompts + prompt imports from Promptsource
-- More advanced configuration options, including output post-processing, answer extraction, and multiple LM generations per document, configurable fewshot settings, and more
-- Speedups and new modeling libraries supported, including: faster data-parallel HF model usage, vLLM support, MPS support with HuggingFace, and more
-- Logging and usability changes
-- New tasks including CoT BIG-Bench-Hard, Belebele, user-defined task groupings, and more
-
-Please see our updated documentation pages in `docs/` for more details.
-
-Development will be continuing on the `main` branch, and we encourage you to give us feedback on what features are desired and how to improve the library further, or ask questions, either in issues or PRs on GitHub, or in the [EleutherAI discord](https://discord.gg/eleutherai)!
-
----
-
-## Overview
-
-This project provides a unified framework to test generative language models on a large number of different evaluation tasks.
-
-**Features:**
-
-- Over 60 standard academic benchmarks for LLMs, with hundreds of subtasks and variants implemented.
-- Support for models loaded via [transformers](https://github.com/huggingface/transformers/) (including quantization via [GPTQModel](https://github.com/ModelCloud/GPTQModel) and [AutoGPTQ](https://github.com/PanQiWei/AutoGPTQ)), [GPT-NeoX](https://github.com/EleutherAI/gpt-neox), and [Megatron-DeepSpeed](https://github.com/microsoft/Megatron-DeepSpeed/), with a flexible tokenization-agnostic interface.
-- Support for fast and memory-efficient inference with [vLLM](https://github.com/vllm-project/vllm).
-- Support for commercial APIs including [OpenAI](https://openai.com), and [TextSynth](https://textsynth.com/).
-- Support for evaluation on adapters (e.g. LoRA) supported in [HuggingFace's PEFT library](https://github.com/huggingface/peft).
-- Support for local models and benchmarks.
-- Evaluation with publicly available prompts ensures reproducibility and comparability between papers.
-- Easy support for custom prompts and evaluation metrics.
-
-The Language Model Evaluation Harness is the backend for 🤗 Hugging Face's popular [Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard), has been used in [hundreds of papers](https://scholar.google.com/scholar?oi=bibs&hl=en&authuser=2&cites=15052937328817631261,4097184744846514103,1520777361382155671,17476825572045927382,18443729326628441434,14801318227356878622,7890865700763267262,12854182577605049984,15641002901115500560,5104500764547628290), and is used internally by dozens of organizations including NVIDIA, Cohere, BigScience, BigCode, Nous Research, and Mosaic ML.
 
 ## Install
 
-To install the `lm-eval` package from the github repository, run:
+To install package from the github repository, run:
 
 ```bash
-git clone --depth 1 https://github.com/EleutherAI/lm-evaluation-harness
+git clone --depth 1 https://github.com/KabyshevEduard/tat-benchmark
 cd lm-evaluation-harness
 pip install -e .
 ```
@@ -93,38 +40,19 @@ Multiple backends can be installed together:
 pip install "lm_eval[hf,vllm,api]"
 ```
 
-A detailed table of all optional extras is available at the end of this document.
-
-## Basic Usage
-
-### Documentation
-
-| Guide | Description |
-|-------|-------------|
-| [CLI Reference](./docs/interface.md) | Command-line arguments and subcommands |
-| [Configuration Guide](./docs/config_files.md) | YAML config file format and examples |
-| [Python API](./docs/python-api.md) | Programmatic usage with `simple_evaluate()` |
-| [Task Guide](./lm_eval/tasks/README.md) | Available tasks and task configuration |
-
-Use `lm-eval -h` to see available options, or `lm-eval run -h` for evaluation options.
-
-List available tasks with:
-
-```bash
-lm-eval ls tasks
-```
+## Task `brighter`
 
 ### Hugging Face `transformers`
 
 > [!Important]
 > To use the HuggingFace backend, first install: `pip install "lm_eval[hf]"`
 
-To evaluate a model hosted on the [HuggingFace Hub](https://huggingface.co/models) (e.g. GPT-J-6B) on `hellaswag` you can use the following command (this assumes you are using a CUDA-compatible GPU):
+To evaluate a model hosted on the [HuggingFace Hub](https://huggingface.co/models) (e.g. GPT-J-6B) on `brighter` you can use the following command (this assumes you are using a CUDA-compatible GPU):
 
 ```bash
 lm_eval --model hf \
     --model_args pretrained=EleutherAI/gpt-j-6B \
-    --tasks hellaswag \
+    --tasks brighter \
     --device cuda:0 \
     --batch_size 8
 ```
@@ -134,7 +62,7 @@ Additional arguments can be provided to the model constructor using the `--model
 ```bash
 lm_eval --model hf \
     --model_args pretrained=EleutherAI/pythia-160m,revision=step100000,dtype="float" \
-    --tasks lambada_openai,hellaswag \
+    --tasks brighter \
     --device cuda:0 \
     --batch_size 8
 ```
@@ -146,7 +74,7 @@ Batch size selection can be automated by setting the  ```--batch_size``` flag to
 ```bash
 lm_eval --model hf \
     --model_args pretrained=EleutherAI/pythia-160m,revision=step100000,dtype="float" \
-    --tasks lambada_openai,hellaswag \
+    --tasks brighter \
     --device cuda:0 \
     --batch_size auto:4
 ```
@@ -168,7 +96,7 @@ If no separate tokenizer is provided, Hugging Face will attempt to reconstruct t
 ```bash
 lm_eval --model hf \
     --model_args pretrained=/path/to/gguf_folder,gguf_file=model-name.gguf,tokenizer=/path/to/tokenizer \
-    --tasks hellaswag \
+    --tasks brighter \
     --device cuda:0 \
     --batch_size 8
 ```
@@ -184,7 +112,7 @@ To perform *data-parallel evaluation* (where each GPU loads a **separate full co
 
 ```bash
 accelerate launch -m lm_eval --model hf \
-    --tasks lambada_openai,arc_easy \
+    --tasks brighter \
     --batch_size 16
 ```
 
@@ -200,7 +128,7 @@ In this setting, run the library *outside the `accelerate` launcher*, but passin
 
 ```bash
 lm_eval --model hf \
-    --tasks lambada_openai,arc_easy \
+    --tasks brighter \
     --model_args parallelize=True \
     --batch_size 16
 ```
@@ -219,7 +147,7 @@ The third option is to use both at the same time. This will allow you to take ad
 ```bash
 accelerate launch --multi_gpu --num_processes {nb_of_copies_of_your_model} \
     -m lm_eval --model hf \
-    --tasks lambada_openai,arc_easy \
+    --tasks brighter \
     --model_args parallelize=True \
     --batch_size 16
 ```
@@ -270,7 +198,7 @@ Run the evaluation harness with steering vectors applied:
 ```bash
 lm_eval --model steered \
     --model_args pretrained=EleutherAI/pythia-160m,steer_path=steer_config.pt \
-    --tasks lambada_openai,hellaswag \
+    --tasks brighter \
     --device cuda:0 \
     --batch_size 8
 ```
@@ -288,7 +216,7 @@ Run a `nemo` model on one GPU:
 ```bash
 lm_eval --model nemo_lm \
     --model_args path=<path_to_nemo_model> \
-    --tasks hellaswag \
+    --tasks brighter \
     --batch_size 32
 ```
 
@@ -319,7 +247,7 @@ torchrun --nproc-per-node=8 --no-python lm_eval \
 torchrun --nproc-per-node=4 --no-python lm_eval \
     --model nemo_lm \
     --model_args path=<path_to_nemo_model>,devices=4,tensor_model_parallel_size=2,pipeline_model_parallel_size=2 \
-    --tasks hellaswag \
+    --tasks brighter \
     --batch_size 32
 ```
 
@@ -335,7 +263,7 @@ To enable pipeline parallelism, set the `model_args` of `pipeline_parallel`. In 
 
 ```bash
 lm_eval --model openvino \
-    --tasks wikitext \
+    --tasks brighter \
     --model_args pretrained=<path_to_ov_model>,pipeline_parallel=True \
     --device HETERO:GPU.1,GPU.0
 ```
@@ -347,7 +275,7 @@ We also support vLLM for faster inference on [supported model types](https://doc
 ```bash
 lm_eval --model vllm \
     --model_args pretrained={model_name},tensor_parallel_size={GPUs_per_model},dtype=auto,gpu_memory_utilization=0.8,data_parallel_size={model_replicas} \
-    --tasks lambada_openai \
+    --tasks brighter \
     --batch_size auto
 ```
 
@@ -406,7 +334,7 @@ Evaluate a LLM ONNX model on NPU/GPU/CPU on Windows AI PC:
 ```bash
 lm_eval --model winml \
     --model_args pretrained=/path/to/onnx/model,device=npu \
-    --tasks mmlu \
+    --tasks brighter \
     --batch_size 1
 ```
 
@@ -432,7 +360,7 @@ To call a hosted model, use:
 export OPENAI_API_KEY=YOUR_KEY_HERE
 lm_eval --model openai-completions \
     --model_args model=davinci-002 \
-    --tasks lambada_openai,hellaswag
+    --tasks brighter
 ```
 
 We also support using your own local inference server with servers that mirror the OpenAI Completions and ChatCompletions APIs.
@@ -500,7 +428,7 @@ To verify the data integrity of the tasks you're performing in addition to runni
 ```bash
 lm_eval --model openai \
     --model_args engine=davinci-002 \
-    --tasks lambada_openai,hellaswag \
+    --tasks brighter \
     --check_integrity
 ```
 
@@ -511,7 +439,7 @@ For models loaded with the HuggingFace  `transformers` library, any arguments pr
 ```bash
 lm_eval --model hf \
     --model_args pretrained=EleutherAI/gpt-j-6b,parallelize=True,load_in_4bit=True,peft=nomic-ai/gpt4all-j-lora \
-    --tasks openbookqa,arc_easy,winogrande,hellaswag,arc_challenge,piqa,boolq \
+    --tasks brighter \
     --device cuda:0
 ```
 
@@ -520,7 +448,7 @@ Models provided as delta weights can be easily loaded using the Hugging Face tra
 ```bash
 lm_eval --model hf \
     --model_args pretrained=Ejafa/llama_7B,delta=lmsys/vicuna-7b-delta-v1.1 \
-    --tasks hellaswag
+    --tasks brighter
 ```
 
 GPTQ quantized models can be loaded using [GPTQModel](https://github.com/ModelCloud/GPTQModel) (faster) or [AutoGPTQ](https://github.com/PanQiWei/AutoGPTQ)
@@ -530,7 +458,7 @@ GPTQModel: add `,gptqmodel=True` to `model_args`
 ```bash
 lm_eval --model hf \
     --model_args pretrained=model-name-or-path,gptqmodel=True \
-    --tasks hellaswag
+    --tasks brighter
 ```
 
 AutoGPTQ: add `,autogptq=True` to `model_args`:
@@ -538,7 +466,7 @@ AutoGPTQ: add `,autogptq=True` to `model_args`:
 ```bash
 lm_eval --model hf \
     --model_args pretrained=model-name-or-path,autogptq=model.safetensors,gptq_use_triton=True \
-    --tasks hellaswag
+    --tasks brighter
 ```
 
 We support wildcards in task names, for example you can run all of the machine-translated lambada tasks via `--task lambada_openai_mt_*`.
@@ -555,7 +483,7 @@ To push results and samples to the Hugging Face Hub, first ensure an access toke
 ```bash
 lm_eval --model hf \
     --model_args pretrained=model-name-or-path,autogptq=model.safetensors,gptq_use_triton=True \
-    --tasks hellaswag \
+    --tasks brighter \
     --log_samples \
     --output_path results \
     --hf_hub_log_args hub_results_org=EleutherAI,hub_repo_name=lm-eval-results,push_results_to_hub=True,push_samples_to_hub=True,public_repo=False \
@@ -596,7 +524,7 @@ You can thus run your evaluation on any number of tasks and models and upload al
 lm_eval \
     --model hf \
     --model_args pretrained=EleutherAI/gpt-j-6B \
-    --tasks hellaswag \
+    --tasks brighter \
     --device cuda:0 \
     --batch_size 8 \
     --log_samples \
@@ -640,7 +568,7 @@ Run eval harness as usual with a `wandb_args` flag. Use this flag to provide arg
 lm_eval \
     --model hf \
     --model_args pretrained=microsoft/phi-2,trust_remote_code=True \
-    --tasks hellaswag,mmlu_abstract_algebra \
+    --tasks brighter \
     --device cuda:0 \
     --batch_size 8 \
     --output_path output/phi-2 \
@@ -651,38 +579,6 @@ lm_eval \
 
 In the stdout, you will find the link to the W&B run page as well as link to the generated report. You can find an example of this workflow in [examples/visualize-wandb.ipynb](examples/visualize-wandb.ipynb), and an example of how to integrate it beyond the CLI.
 
-## Contributing
-
-Check out our [open issues](https://github.com/EleutherAI/lm-evaluation-harness/issues) and feel free to submit pull requests!
-
-For more information on the library and how everything fits together, see our [documentation pages](https://github.com/EleutherAI/lm-evaluation-harness/tree/main/docs).
-
-To get started with development, first clone the repository and install the dev dependencies:
-
-```bash
-git clone https://github.com/EleutherAI/lm-evaluation-harness
-cd lm-evaluation-harness
-pip install -e ".[dev,hf]"
-````
-
-### Implementing new tasks
-
-To implement a new task in the eval harness, see [this guide](./docs/new_task_guide.md).
-
-In general, we follow this priority list for addressing concerns about prompting and other eval details:
-
-1. If there is widespread agreement among people who train LLMs, use the agreed upon procedure.
-2. If there is a clear and unambiguous official implementation, use that procedure.
-3. If there is widespread agreement among people who evaluate LLMs, use the agreed upon procedure.
-4. If there are multiple common implementations but not universal or widespread agreement, use our preferred option among the common implementations. As before, prioritize choosing from among the implementations found in LLM training papers.
-
-These are guidelines and not rules, and can be overruled in special circumstances.
-
-We try to prioritize agreement with the procedures used by other groups to decrease the harm when people inevitably compare runs across different papers despite our discouragement of the practice. Historically, we also prioritized the implementation from [Language Models are Few Shot Learners](https://arxiv.org/abs/2005.14165) as our original goal was specifically to compare results with that paper.
-
-### Support
-
-The best way to get support is to open an issue on this repo or join the [EleutherAI Discord server](https://discord.gg/eleutherai). The `#lm-thunderdome` channel is dedicated to developing this project and the `#release-discussion` channel is for receiving support for our releases. If you've used the library and have had a positive (or negative) experience, we'd love to hear from you!
 
 ## Optional Extras
 
@@ -707,44 +603,3 @@ These extras install dependencies required to run specific model backends:
 | sparsify       | Sparsify model steering                          |
 | sae_lens       | SAELens model steering                           |
 
-### Task Dependencies
-
-These extras install dependencies required for specific evaluation tasks:
-
-| NAME                 | Description                    |
-|----------------------|--------------------------------|
-| tasks                | All task-specific dependencies |
-| acpbench             | ACP Bench tasks                |
-| audiolm_qwen         | Qwen2 audio models             |
-| ifeval               | IFEval task                    |
-| japanese_leaderboard | Japanese LLM tasks             |
-| longbench            | LongBench tasks                |
-| math                 | Math answer checking           |
-| multilingual         | Multilingual tokenizers        |
-| ruler                | RULER tasks                    |
-
-### Development & Utilities
-
-| NAME          | Description                    |
-|---------------|--------------------------------|
-| dev           | Linting & contributions        |
-| hf_transfer   | Speed up HF downloads          |
-| sentencepiece | Sentencepiece tokenizer        |
-| unitxt        | Unitxt tasks                   |
-| wandb         | Weights & Biases logging       |
-| zeno          | Zeno result visualization      |
-
-## Cite as
-
-```text
-@misc{eval-harness,
-  author       = {Gao, Leo and Tow, Jonathan and Abbasi, Baber and Biderman, Stella and Black, Sid and DiPofi, Anthony and Foster, Charles and Golding, Laurence and Hsu, Jeffrey and Le Noac'h, Alain and Li, Haonan and McDonell, Kyle and Muennighoff, Niklas and Ociepa, Chris and Phang, Jason and Reynolds, Laria and Schoelkopf, Hailey and Skowron, Aviya and Sutawika, Lintang and Tang, Eric and Thite, Anish and Wang, Ben and Wang, Kevin and Zou, Andy},
-  title        = {The Language Model Evaluation Harness},
-  month        = 07,
-  year         = 2024,
-  publisher    = {Zenodo},
-  version      = {v0.4.3},
-  doi          = {10.5281/zenodo.12608602},
-  url          = {https://zenodo.org/records/12608602}
-}
-```
