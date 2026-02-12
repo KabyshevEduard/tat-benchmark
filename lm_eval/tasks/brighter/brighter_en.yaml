@@ -1,0 +1,20 @@
+task: brighter_en
+dataset_path: brighter-dataset/BRIGHTER-emotion-categories
+dataset_name: tat
+training_split: train
+validation_split: null
+test_split: test
+output_type: multiple_choice
+process_docs: !function utils.process_docs
+doc_to_text: "Answer the following question only by providng the letter corresponding to the right option only.\nWhat emotional connotation does this message have?\n{{question.strip()}}\n"
+doc_to_choice: ["A", "B", "C", "D", "E", "F", "G"]
+doc_to_target: "{{ answer }}"
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+  - metric: acc_norm
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 1.0

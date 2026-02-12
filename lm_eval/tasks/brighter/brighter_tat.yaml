@@ -1,0 +1,3 @@
+include: brighter_en.yaml
+task: brighter_tat
+doc_to_text: "Җавапның дөрес вариантына туры килгән хәрефне генә күрсәтеп, киләсе сорауга җавап бирегез.\nБу хәбәр нинди эмоциональ төсмергә ия?\n{{question.strip()}}\nA. anger\nB. disgust\nC. fear\nD. joy\nE. sadness\nF. surprise\nG. none of above\nҖавап:"
