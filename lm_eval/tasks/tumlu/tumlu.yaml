@@ -3,6 +3,8 @@ tag:
 task: tumlu
 dataset_path: jafarisbarov/TUMLU-mini
 dataset_name: tatar
+dataset_kwargs:
+  token: !ENV {TOKEN}
 output_type: multiple_choice
 training_split: null
 validation_split: dev
