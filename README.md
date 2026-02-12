@@ -40,12 +40,9 @@ Multiple backends can be installed together:
 pip install "lm_eval[hf,vllm,api]"
 ```
 
-## Task `brighter`
+## Usage on example task `BRIGHTER`
 
 ### Hugging Face `transformers`
-
-> [!Important]
-> To use the HuggingFace backend, first install: `pip install "lm_eval[hf]"`
 
 To evaluate a model hosted on the [HuggingFace Hub](https://huggingface.co/models) (e.g. GPT-J-6B) on `brighter` you can use the following command (this assumes you are using a CUDA-compatible GPU):
 
@@ -431,6 +428,15 @@ lm_eval --model openai \
     --tasks brighter \
     --check_integrity
 ```
+
+## Tasks
+
+| name | type |desription| metric   |
+|------|------|----------|----------|
+|brighter|multiple choice|| accuracy |
+|tumlu|multiple choice|| accuracy |
+
+
 
 ## Advanced Usage Tips
 
