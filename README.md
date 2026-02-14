@@ -431,10 +431,11 @@ lm_eval --model openai \
 
 ## Tasks
 
-| name | type |desription| metric   |
-|------|------|----------|----------|
-|brighter|multiple choice|| accuracy |
-|tumlu|multiple choice|| accuracy |
+| name | type | desription                                                                                                                                                                                                                                                                                                                                                                                                                | metric   |
+|------|------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+|brighter|multiple choice| Dataset BRIGHTER  | accuracy |
+|tumlu|multiple choice| Dataset TUMLU                                                                                                                                                                                                                                                                                                                                                                                                             | accuracy |
+|tattr|generate until| Datasets IPSAN and AigizK tatar-russian-parallel-corpora                                                                                                                                                                                                                                                                                                                                                                  | bleu     |
 
 
 

@@ -1,0 +1,7 @@
+include: tattr_aigiz.yaml
+task: tattr_ipsan
+dataset_path: IPSAN/tatar_translation_dataset
+dataset_kwargs:
+  token: ${TOKEN}
+doc_to_text: "Translate on russian language\n{{ tat.strip() }}"
+doc_to_target: "{{ ru }}"

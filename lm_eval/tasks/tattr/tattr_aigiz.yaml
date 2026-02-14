@@ -1,0 +1,13 @@
+task: tattr_aigiz
+dataset_path: AigizK/tatar-russian-parallel-corpora
+training_split: train
+output_type: generate_until
+process_docs: !function utils.process_docs
+doc_to_text: "Translate on russian language\n{{ tat.strip() }}"
+doc_to_target: "{{ rus }}"
+metric_list:
+  - metric: bleu
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 1.0
