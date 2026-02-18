@@ -3,7 +3,7 @@ task:
   - tattr_aigiz
   - tattr_ipsan
 aggregate_metric_list:
-  - metric: blue
+  - metric: bleu
     aggregation: mean
     weight_by_size: True
 metadata:
