@@ -2,9 +2,5 @@ group: tattr
 task:
   - tattr_aigiz
   - tattr_ipsan
-aggregate_metric_list:
-  - metric: bleu
-    aggregation: mean
-    weight_by_size: True
 metadata:
   version: 1.0
