@@ -1,5 +1,7 @@
 task: tattr_aigiz
 dataset_path: AigizK/tatar-russian-parallel-corpora
+dataset_kwargs:
+  token: ${TOKEN}
 training_split: null
 validation_split: null
 test_split: train
