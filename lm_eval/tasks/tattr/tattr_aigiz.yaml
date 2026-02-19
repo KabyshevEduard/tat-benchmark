@@ -11,7 +11,6 @@ doc_to_text: "Translate on russian language\n{{ tat.strip() }}"
 doc_to_target: "{{ rus }}"
 metric_list:
   - metric: bleu
-    aggregation: mean
     higher_is_better: true
 metadata:
   version: 1.0
