@@ -2,6 +2,15 @@
 
 ---
 
+## Tasks
+
+| name     | type | desription                                               | metric  |
+|----------|------|----------------------------------------------------------|---------|
+| brighter |multiple choice| Dataset BRIGHTER                                         | accuracy |
+| tumlu    |multiple choice| Dataset TUMLU                                            | accuracy |
+| mtaigizk |generate until| Datasets AigizK tatar-russian-parallel-corpora  | bleu    |
+| mtipsan  |generate until| Datasets IPSAN  | bleu    |
+
 ## Install
 
 To install package from the github repository, run:
@@ -428,16 +437,6 @@ lm_eval --model openai \
     --tasks brighter \
     --check_integrity
 ```
-
-## Tasks
-
-| name | type | desription                                                                                                                                                                                                                                                                                                                                                                                                                | metric   |
-|------|------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-|brighter|multiple choice| Dataset BRIGHTER  | accuracy |
-|tumlu|multiple choice| Dataset TUMLU                                                                                                                                                                                                                                                                                                                                                                                                             | accuracy |
-|tattr|generate until| Datasets IPSAN and AigizK tatar-russian-parallel-corpora                                                                                                                                                                                                                                                                                                                                                                  | bleu     |
-
-
 
 ## Advanced Usage Tips
 
