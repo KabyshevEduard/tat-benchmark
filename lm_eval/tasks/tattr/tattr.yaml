@@ -1,7 +1,7 @@
 group: tattr
 task:
-  - tattr_aigiz
-  - tattr_ipsan
+  - mtaigizk
+  - mtipsan
 aggregate_metric_list:
   - metric: bleu
     aggregation: mean

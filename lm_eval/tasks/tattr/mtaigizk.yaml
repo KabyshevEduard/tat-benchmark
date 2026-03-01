@@ -1,4 +1,4 @@
-task: tattr_aigiz
+task: mtaigizk
 dataset_path: AigizK/tatar-russian-parallel-corpora
 dataset_kwargs:
   token: ${TOKEN}

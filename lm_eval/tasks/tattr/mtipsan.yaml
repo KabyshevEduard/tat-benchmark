@@ -1,5 +1,5 @@
-include: tattr_aigiz.yaml
-task: tattr_ipsan
+include: mtaigizk.yaml
+task: mtipsan
 dataset_path: IPSAN/tatar_translation_dataset
 dataset_kwargs:
   token: ${TOKEN}
