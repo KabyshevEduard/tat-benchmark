@@ -1,8 +1,6 @@
 import json
-import re
 from datasets import Dataset
 import numpy as np
-import math
 
 
 def process_docs(dataset: Dataset) -> Dataset:
