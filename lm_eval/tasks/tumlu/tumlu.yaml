@@ -1,5 +1,3 @@
-tag:
-  - multiple_choice
 task: tumlu
 dataset_path: jafarisbarov/TUMLU-mini
 dataset_name: tatar
