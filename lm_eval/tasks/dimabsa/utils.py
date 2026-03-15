@@ -50,6 +50,7 @@ def rmseva_agg(items):
 )
 def rmseva_json(items):
     # Распаковываем золотые ответы и предсказания
+    print(items)
     golds, preds = zip(*items)
 
     all_gold_values = []
