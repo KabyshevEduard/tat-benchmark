@@ -24,7 +24,7 @@ def parse_va_string(text: str) -> tuple[float, float]:
     v_a = tuple(map(float, v_a))
     return v_a
 
-
+"""
 def l2(arr_1, arr_2):
     if len(arr_1) != len(arr_2):
         raise ValueError('arr_1 and arr_2 must have same length')
@@ -32,7 +32,7 @@ def l2(arr_1, arr_2):
     arr_2 = np.array(arr_2)
     decimal = np.sum(np.square((arr_1 - arr_2)))
     return np.sqrt(decimal/len(arr_1))
-
+"""
 
 @register_metric(
     metric='rmseva_json',
@@ -40,7 +40,7 @@ def l2(arr_1, arr_2):
     output_type='generate_until',
     aggregation='mean'
 )
-def rmseva(items):
+def rmseva_json(items):
     golds, preds = zip(*items)
 
     all_gold_values = []
