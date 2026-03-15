@@ -14,7 +14,7 @@ def process_docs(dataset: Dataset) -> Dataset:
         doc = {
             'text': doc['Text'],
             'options': options,
-            'Aspect_VA': doc['Aspect_VA'],
+            'Aspect_VA': str(doc['Aspect_VA']),
         }
         return doc
     return dataset.map(_process_doc)
@@ -51,15 +51,14 @@ def rmseva_agg(items):
 def rmseva_json(items):
     # Распаковываем золотые ответы и предсказания
     golds, preds = zip(*items)
-    print(golds)
-    print(preds)
+
     all_gold_values = []
     all_pred_values = []
     for gold_str, pred_str in zip(golds, preds):
         try:
             # Парсим JSON строки
-            gold_data = json.loads(gold_str)
-            pred_data = json.loads(pred_str)
+            gold_data = json.loads(gold_str.strip())
+            pred_data = json.loads(pred_str.strip())
             # Извлекаем значения VA
             gold_values = [parse_va_string(item.get('VA')) for item in gold_data]
             pred_values = [parse_va_string(item.get('VA')) for item in pred_data]
