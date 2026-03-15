@@ -3,6 +3,9 @@ dataset_path: json
 dataset_name: null
 dataset_kwargs:
   data_files: "tat-benchmark/lm_eval/tasks/dimabsa/tat_restaurant_test_task1.jsonl"
+training_split: train
+validation_split: null
+test_split: null
 process_docs: !function utils.process_docs
 doc_to_text: "What aspects and their valence-arousal (VA) score of this text:\n{{ text }}\nAspects: {{ options }}\n\nThe output should be in JSON Lines format and include the following fields. All textual outputs are case-sensitive and array. It always should be an array.\nAspect → The aspect name(s) exactly as they appear in the input (case-sensitive, same order).\nVA → The valence-arousal score is represented in the V#A format, with each value ranging from 1.00 to 9.00 and rounded to two decimal places."
 doc_to_target: "{{ Aspect_VA }}"
