@@ -2,6 +2,7 @@ import json
 from datasets import Dataset
 import numpy as np
 from lm_eval.api.metrics import register_metric
+from lm_eval.api.metrics import register_aggregation
 
 
 def process_docs(dataset: Dataset) -> Dataset:
@@ -38,12 +39,15 @@ def l2(arr_1, arr_2):
     metric='rmseva_json',
     higher_is_better=False,
     output_type='generate_until',
-    aggregation='mean'
+    aggregation='rms'
 )
-def rmseva_json(predictions, references):
+def rmseva_json(items):
+    # Распаковываем золотые ответы и предсказания
+    golds, preds = zip(*items)
+
     all_gold_values = []
     all_pred_values = []
-    for gold_str, pred_str in zip(references, predictions):
+    for gold_str, pred_str in zip(golds, preds):
         try:
             # Парсим JSON строки
             gold_data = json.loads(gold_str)
@@ -63,13 +67,19 @@ def rmseva_json(predictions, references):
     if len(all_gold_values) != len(all_gold_values):
         return float('nan')
 
-    # Вычисляем RMSE
+    # Вычисляем
     all_gold_values = np.array(all_gold_values, dtype=float)
     all_pred_values = np.array(all_pred_values, dtype=float)
     result = all_gold_values - all_pred_values
     result = result ** 2
     result = np.sum(result, axis=1)
+
+    return result
+
+
+@register_aggregation('rms')
+def rms(items):
+    result = np.array(items)
     mse = np.mean(result)
     rmse = np.sqrt(mse)
-
-    return float(rmse)
+    return rmse
