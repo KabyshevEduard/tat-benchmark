@@ -40,12 +40,10 @@ def l2(arr_1, arr_2):
     output_type='generate_until',
     aggregation='mean'
 )
-def rmseva_json(items):
-    golds, preds = zip(*items)
-
+def rmseva_json(predictions, references):
     all_gold_values = []
     all_pred_values = []
-    for gold_str, pred_str in zip(golds, preds):
+    for gold_str, pred_str in zip(references, predictions):
         try:
             # Парсим JSON строки
             gold_data = json.loads(gold_str)
