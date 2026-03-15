@@ -34,10 +34,23 @@ def l2(arr_1, arr_2):
     decimal = np.sum(np.square((arr_1 - arr_2)))
     return np.sqrt(decimal/len(arr_1))
 """
+@register_aggregation('rmseva_agg')
+def rmseva_agg(items):
+    items = np.array(items)
+    mse = np.mean(items)
+    rmse = np.sqrt(mse)
+    return rmse
 
 
-def rmseva_json(preds, golds):
+@register_metric(
+    metric='rmseva_json',
+    higher_is_better=False,
+    output_type='generate_until',
+    aggregation='rmseva_agg'
+)
+def rmseva_json(items):
     # Распаковываем золотые ответы и предсказания
+    golds, preds = zip(*items)
 
     all_gold_values = []
     all_pred_values = []
@@ -67,7 +80,5 @@ def rmseva_json(preds, golds):
     result = all_gold_values - all_pred_values
     result = result ** 2
     result = np.sum(result, axis=1)
-    mse = np.mean(result)
-    rmse = np.sqrt(mse)
 
-    return rmse
+    return result
