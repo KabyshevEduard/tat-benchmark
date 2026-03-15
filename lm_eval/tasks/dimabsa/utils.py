@@ -52,14 +52,14 @@ def rmseva_json(items):
     # Распаковываем золотые ответы и предсказания
     golds, preds = zip(*items)
 
-    print(golds)
-    print(preds)
-
     all_gold_values = []
     all_pred_values = []
     for gold_str, pred_str in zip(golds, preds):
         try:
             # Парсим JSON строки
+            print(gold_str)
+            print(pred_str)
+
             gold_data = json.loads(gold_str.strip())
             pred_data = json.loads(pred_str.strip())
             # Извлекаем значения VA
