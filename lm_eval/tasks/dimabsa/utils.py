@@ -35,6 +35,15 @@ def l2(arr_1, arr_2):
     return np.sqrt(decimal/len(arr_1))
 """
 
+
+@register_aggregation('rms')
+def rms(items):
+    result = np.array(items)
+    mse = np.mean(result)
+    rmse = np.sqrt(mse)
+    return rmse
+
+
 @register_metric(
     metric='rmseva_json',
     higher_is_better=False,
@@ -75,11 +84,3 @@ def rmseva_json(items):
     result = np.sum(result, axis=1)
 
     return result
-
-
-@register_aggregation('rms')
-def rms(items):
-    result = np.array(items)
-    mse = np.mean(result)
-    rmse = np.sqrt(mse)
-    return rmse
