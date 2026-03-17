@@ -21,21 +21,17 @@ def process_docs(dataset: Dataset) -> Dataset:
 
 
 def parse_va_string(text: str) -> tuple[float, float]:
+    if text is None:
+        return 0.0, 0.0
     v_a = text.split('#')
     v_a = tuple(map(float, v_a))
     return v_a
 
-"""
-def l2(arr_1, arr_2):
-    if len(arr_1) != len(arr_2):
-        raise ValueError('arr_1 and arr_2 must have same length')
-    arr_1 = np.array(arr_1)
-    arr_2 = np.array(arr_2)
-    decimal = np.sum(np.square((arr_1 - arr_2)))
-    return np.sqrt(decimal/len(arr_1))
-"""
+
 @register_aggregation('rmseva_agg')
 def rmseva_agg(items):
+    if not items:
+        return 0.0
     items = np.array(items)
     mse = np.mean(items)
     rmse = np.sqrt(mse)
@@ -57,9 +53,6 @@ def rmseva_json(items):
     for gold_str, pred_str in zip(golds, preds):
         try:
             # Парсим JSON строки
-            print(gold_str)
-            print(pred_str)
-
             gold_data = json.loads(gold_str.strip())
             pred_data = json.loads(pred_str.strip())
             # Извлекаем значения VA
@@ -75,7 +68,7 @@ def rmseva_json(items):
 
     # Проверяем, что есть данные для вычисления
     if len(all_gold_values) != len(all_gold_values):
-        return float('nan')
+        return np.array([])
 
     # Вычисляем
     all_gold_values = np.array(all_gold_values, dtype=float)
