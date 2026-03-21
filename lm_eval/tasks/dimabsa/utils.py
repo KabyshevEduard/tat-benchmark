@@ -44,7 +44,7 @@ def rmseva_agg(items, **kwargs):
     output_type='generate_until',
     aggregation='rmseva_agg'
 )
-def rmseva_json(items, **kwargs):
+def rmseva_json(items, references=None, **kwargs):
     # Распаковываем золотые ответы и предсказания
     golds, preds = zip(*items)
 
