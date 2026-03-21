@@ -45,19 +45,16 @@ def rmseva_agg(items, **kwargs):
     aggregation='rmseva_agg'
 )
 def rmseva_json(references, predictions):
-    # Распаковываем золотые ответы и предсказания
-    print(predictions)
-    """
-    golds, preds = zip(*items)
-
     all_gold_values = []
     all_pred_values = []
-    for gold_str, pred_str in zip(golds, preds):
+    print(type(predictions))
+    print(type(predictions[0]))
+    for gold, pred_str in zip(references, predictions):
         try:
             # Парсим JSON строки
             pred_data = json.loads(pred_str.strip())
             # Извлекаем значения VA
-            gold_values = [parse_va_string(item.get('VA')) for item in gold_data]
+            gold_values = [parse_va_string(item.get('VA')) for item in gold]
             pred_values = [parse_va_string(item.get('VA')) for item in pred_data]
             # Добавление значений в массив
             all_gold_values.extend(gold_values)
@@ -79,4 +76,3 @@ def rmseva_json(references, predictions):
     result = np.sum(result, axis=1)
 
     return result
-    """
