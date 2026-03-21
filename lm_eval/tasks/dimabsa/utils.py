@@ -29,7 +29,7 @@ def parse_va_string(text: str) -> tuple[float, float]:
 
 
 @register_aggregation('rmseva_agg')
-def rmseva_agg(items):
+def rmseva_agg(items, **kwargs):
     if not items:
         return 0.0
     items = np.array(items)
@@ -44,7 +44,7 @@ def rmseva_agg(items):
     output_type='generate_until',
     aggregation='rmseva_agg'
 )
-def rmseva_json(items):
+def rmseva_json(items, **kwargs):
     # Распаковываем золотые ответы и предсказания
     golds, preds = zip(*items)
 
