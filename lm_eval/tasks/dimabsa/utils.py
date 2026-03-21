@@ -44,9 +44,9 @@ def rmseva_agg(items, **kwargs):
     output_type='generate_until',
     aggregation='rmseva_agg'
 )
-def rmseva_json(**kwargs):
-    print(kwargs)
+def rmseva_json(references, predictions):
     # Распаковываем золотые ответы и предсказания
+    print(predictions)
     """
     golds, preds = zip(*items)
 
@@ -55,7 +55,6 @@ def rmseva_json(**kwargs):
     for gold_str, pred_str in zip(golds, preds):
         try:
             # Парсим JSON строки
-            gold_data = json.loads(gold_str.strip())
             pred_data = json.loads(pred_str.strip())
             # Извлекаем значения VA
             gold_values = [parse_va_string(item.get('VA')) for item in gold_data]
