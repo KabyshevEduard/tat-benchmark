@@ -47,8 +47,8 @@ def rmseva_agg(items, **kwargs):
 def rmseva_json(references, predictions):
     all_gold_values = []
     all_pred_values = []
-    print(type(predictions))
-    print(type(predictions[0]))
+    print(type(references)) #list
+    print(type(references[0])) #str
     for gold, pred_str in zip(references, predictions):
         try:
             # Парсим JSON строки
