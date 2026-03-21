@@ -44,8 +44,10 @@ def rmseva_agg(items, **kwargs):
     output_type='generate_until',
     aggregation='rmseva_agg'
 )
-def rmseva_json(items, references=None, **kwargs):
+def rmseva_json(**kwargs):
+    print(kwargs)
     # Распаковываем золотые ответы и предсказания
+    """
     golds, preds = zip(*items)
 
     all_gold_values = []
@@ -78,3 +80,4 @@ def rmseva_json(items, references=None, **kwargs):
     result = np.sum(result, axis=1)
 
     return result
+    """
