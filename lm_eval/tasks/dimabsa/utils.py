@@ -73,4 +73,4 @@ def rmseva_json(references, predictions):
     result = result ** 2
     result = np.sum(result, axis=1)
 
-    return result
+    return list(result)
