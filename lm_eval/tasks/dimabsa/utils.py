@@ -33,7 +33,7 @@ def rmseva_agg(items, **kwargs):
     items = np.array(items)
     mse = np.mean(items)
     rmse = np.sqrt(mse)
-    return rmse
+    return float(rmse)
 
 
 @register_metric(
