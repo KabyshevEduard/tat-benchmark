@@ -62,9 +62,9 @@ def rmseva_json(references, predictions):
 
     # Проверяем, что есть данные для вычисления
     if len(all_gold_values) != len(all_gold_values):
-        return np.array([[float('inf'), float('inf')]])
+        return [float('inf')]
     elif len(all_gold_values) == 0 or len(all_gold_values) == 0:
-        return np.array([[float('inf'), float('inf')]])
+        return [float('inf')]
 
     # Вычисляем
     all_gold_values = np.array(all_gold_values, dtype=float)
@@ -72,6 +72,4 @@ def rmseva_json(references, predictions):
     result = all_gold_values - all_pred_values
     result = result ** 2
     result = np.sum(result, axis=1)
-    mse = np.mean(result)
-    rmse = np.sqrt(mse)
-    return float(rmse)
+    return list(result)
