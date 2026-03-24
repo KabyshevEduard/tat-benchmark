@@ -72,5 +72,6 @@ def rmseva_json(references, predictions):
     result = all_gold_values - all_pred_values
     result = result ** 2
     result = np.sum(result, axis=1)
-
-    return list(result)
+    mse = np.mean(result)
+    rmse = np.sqrt(mse)
+    return float(rmse)
