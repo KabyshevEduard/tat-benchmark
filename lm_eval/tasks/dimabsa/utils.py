@@ -28,19 +28,16 @@ def parse_va_string(text: str) -> tuple[float, float]:
     return v_a
 
 
-# @register_aggregation('rmseva_agg')
-# def rmseva_agg(items, **kwargs):
-#     items = np.array(items)
-#     mse = np.mean(items)
-#     rmse = np.sqrt(mse)
-#     return float(rmse)
+@register_aggregation('rmseva_agg')
+def rmseva_agg(value, **kwargs):
+    return value
 
 
 @register_metric(
     metric='rmseva_json',
     higher_is_better=False,
     output_type='generate_until',
-    #aggregation='rmseva_agg'
+    aggregation='rmseva_agg'
 )
 def rmseva_json(references, predictions):
     all_gold_values = []
