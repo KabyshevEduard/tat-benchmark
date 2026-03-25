@@ -30,6 +30,7 @@ def parse_va_string(text: str) -> tuple[float, float]:
 
 @register_aggregation('rmseva_agg')
 def rmseva_agg(value, **kwargs):
+    print(value)
     return value
 
 
@@ -59,9 +60,13 @@ def rmseva_json(references, predictions):
 
     # Проверяем, что есть данные для вычисления
     if len(all_gold_values) != len(all_gold_values):
-        return float('inf')
+        r = float('inf')
+        print(r)
+        return r
     elif len(all_gold_values) == 0 or len(all_gold_values) == 0:
-        return float('inf')
+        r = float('inf')
+        print(r)
+        return r
 
     # Вычисляем
     all_gold_values = np.array(all_gold_values, dtype=float)

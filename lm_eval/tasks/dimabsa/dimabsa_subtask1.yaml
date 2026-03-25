@@ -11,7 +11,7 @@ doc_to_text: "{{ text }}\nAspects: {{ options }}\nThe output should be array of 
 doc_to_target: "{{ Aspect_VA }}"
 metric_list:
   - metric: rmseva_json
-    #aggregation: rmseva_agg
+    aggregation: rmseva_agg
     higher_is_better: false
 metadata:
   version: 1.0
