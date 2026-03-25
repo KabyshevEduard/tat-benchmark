@@ -28,19 +28,19 @@ def parse_va_string(text: str) -> tuple[float, float]:
     return v_a
 
 
-@register_aggregation('rmseva_agg')
-def rmseva_agg(items, **kwargs):
-    items = np.array(items)
-    mse = np.mean(items)
-    rmse = np.sqrt(mse)
-    return float(rmse)
+# @register_aggregation('rmseva_agg')
+# def rmseva_agg(items, **kwargs):
+#     items = np.array(items)
+#     mse = np.mean(items)
+#     rmse = np.sqrt(mse)
+#     return float(rmse)
 
 
 @register_metric(
     metric='rmseva_json',
     higher_is_better=False,
     output_type='generate_until',
-    aggregation='rmseva_agg'
+    #aggregation='rmseva_agg'
 )
 def rmseva_json(references, predictions):
     all_gold_values = []
@@ -62,9 +62,9 @@ def rmseva_json(references, predictions):
 
     # Проверяем, что есть данные для вычисления
     if len(all_gold_values) != len(all_gold_values):
-        return [float('inf')]
+        return float('inf')
     elif len(all_gold_values) == 0 or len(all_gold_values) == 0:
-        return [float('inf')]
+        return float('inf')
 
     # Вычисляем
     all_gold_values = np.array(all_gold_values, dtype=float)
@@ -72,4 +72,6 @@ def rmseva_json(references, predictions):
     result = all_gold_values - all_pred_values
     result = result ** 2
     result = np.sum(result, axis=1)
-    return list(result)
+    mse = np.mean(result)
+    rmse = np.sqrt(mse)
+    return float(rmse)
