@@ -34,6 +34,7 @@ def rmseva_agg(value, **kwargs):
     return value
 
 
+i = 0
 @register_metric(
     metric='rmseva_json',
     higher_is_better=False,
@@ -41,8 +42,18 @@ def rmseva_agg(value, **kwargs):
     aggregation='rmseva_agg'
 )
 def rmseva_json(references, predictions):
+    global i
     all_gold_values = []
     all_pred_values = []
+    # Check
+    i += 1
+    print(i)
+    print('Gold:', references)
+    print('Gold type', type(references))
+    print('Pred:', predictions)
+    print('Pred type', type(predictions))
+    print()
+    #
     for gold, pred_str in zip(references, predictions):
         try:
             # Парсим JSON строки
@@ -61,11 +72,9 @@ def rmseva_json(references, predictions):
     # Проверяем, что есть данные для вычисления
     if len(all_gold_values) != len(all_gold_values):
         r = float('inf')
-        print(r)
         return r
     elif len(all_gold_values) == 0 or len(all_gold_values) == 0:
         r = float('inf')
-        print(r)
         return r
 
     # Вычисляем
