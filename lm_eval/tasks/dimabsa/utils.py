@@ -31,10 +31,13 @@ def parse_va_string(text: str) -> tuple[float, float]:
 @register_aggregation('rmseva_agg')
 def rmseva_agg(value, **kwargs):
     print(value)
+    # value = np.array(value)
+    # value = np.sum(value)
+    # value = np.sqrt(value)
+    # value = float(value)
     return value
 
 
-i = 0
 @register_metric(
     metric='rmseva_json',
     higher_is_better=False,
@@ -42,47 +45,34 @@ i = 0
     aggregation='rmseva_agg'
 )
 def rmseva_json(references, predictions):
-    global i
-    all_gold_values = []
-    all_pred_values = []
-    # Check
-    i += 1
-    print(i)
-    print('Gold:', references)
-    print('Gold type', type(references))
-    print('Pred:', predictions)
-    print('Pred type', type(predictions))
-    print()
-    #
+    gold_values = []
+    pred_values = []
     for gold, pred_str in zip(references, predictions):
         try:
             # Парсим JSON строки
             pred_data = json.loads(pred_str.strip())
             # Извлекаем значения VA
-            gold_values = [parse_va_string(item.get('VA')) for item in gold]
-            pred_values = [parse_va_string(item.get('VA')) for item in pred_data]
+            gold_values.append(parse_va_string(gold.get('VA')))
+            pred_values.append(parse_va_string(pred_data.get('VA')))
             # Добавление значений в массив
-            all_gold_values.extend(gold_values)
-            all_pred_values.extend(pred_values)
         except (json.JSONDecodeError, TypeError, ValueError) as e:
             # В случае ошибки парсинга пропускаем этот пример
             print(f"Ошибка парсинга JSON: {e}")
             continue
 
     # Проверяем, что есть данные для вычисления
-    if len(all_gold_values) != len(all_gold_values):
+    if len(gold_values) != len(pred_values):
         r = float('inf')
         return r
-    elif len(all_gold_values) == 0 or len(all_gold_values) == 0:
+    elif len(gold_values) == 0 or len(pred_values) == 0:
         r = float('inf')
         return r
 
     # Вычисляем
-    all_gold_values = np.array(all_gold_values, dtype=float)
-    all_pred_values = np.array(all_pred_values, dtype=float)
-    result = all_gold_values - all_pred_values
+    gold_values_np = np.array(gold_values, dtype=float)
+    pred_values_np = np.array(pred_values, dtype=float)
+    result = gold_values_np - pred_values_np
     result = result ** 2
     result = np.sum(result, axis=1)
-    mse = np.mean(result)
-    rmse = np.sqrt(mse)
-    return float(rmse)
+    result = np.sum(result)/len(result)
+    return float(result)
