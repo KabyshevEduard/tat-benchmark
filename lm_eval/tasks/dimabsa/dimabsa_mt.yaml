@@ -1,0 +1,17 @@
+task: dimabsa_mt
+dataset_path: parquet
+dataset_name: null
+dataset_kwargs:
+  data_files: "tat-benchmark/lm_eval/tasks/dimabsa/dimabsa_mt.parquet"
+  token: ${TOKEN}
+training_split: null
+validation_split: null
+test_split: train
+output_type: generate_until
+doc_to_text: "Translate on russian language\n{{ tat.strip() }}"
+doc_to_target: "{{ rus }}"
+metric_list:
+  - metric: bleu
+    higher_is_better: true
+metadata:
+  version: 1.0
